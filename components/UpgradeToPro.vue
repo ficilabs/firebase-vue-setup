@@ -6,7 +6,7 @@
     target="_blank"
     rel="noopener noreferrer"
   >
-    Upgrade to Pro
+    Contact Me
 
     <span class="button-inner" />
 

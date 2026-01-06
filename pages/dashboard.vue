@@ -1,153 +1,146 @@
 <script setup>
-import AnalyticsCongratulations from '@/views/dashboard/AnalyticsCongratulations.vue'
-import AnalyticsFinanceTabs from '@/views/dashboard/AnalyticsFinanceTab.vue'
-import AnalyticsOrderStatistics from '@/views/dashboard/AnalyticsOrderStatistics.vue'
-import AnalyticsProfitReport from '@/views/dashboard/AnalyticsProfitReport.vue'
-import AnalyticsTotalRevenue from '@/views/dashboard/AnalyticsTotalRevenue.vue'
-import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
+const realtime = {
+  voltage: 220.8,
+  current: 1.75,
+  power: 385,
+  pf: 0.92,
+  frequency: 50,
+  kwhTotal: 2.84,
+  timestamp: '2026-01-05 01:00',
+}
 
-// 👉 Images
-import chart from '@images/cards/chart-success.png'
-import card from '@images/cards/credit-card-primary.png'
-import paypal from '@images/cards/paypal-error.png'
-import wallet from '@images/cards/wallet-info.png'
+const dailyEnergy = [
+  { date: '2025-01-01', kwh: 4.2, cost: 6500 },
+  { date: '2025-01-02', kwh: 3.8, cost: 5900 },
+]
+
+const prediction = {
+  kwh: 4.5,
+  estimatedCost: 7000,
+}
 </script>
 
 <template>
   <VRow>
-    <!-- 👉 Congratulations -->
+    <!-- REALTIME STAT CARDS -->
+    <VCol
+      v-for="item in [
+        { title: 'Voltage', value: realtime.voltage + ' V' },
+        { title: 'Current', value: realtime.current + ' A' },
+        { title: 'Power', value: realtime.power + ' W' },
+        { title: 'Power Factor', value: realtime.pf },
+        { title: 'Frequency', value: realtime.frequency + ' Hz' },
+        { title: 'Total Energy', value: realtime.kwhTotal + ' kWh' },
+      ]"
+      :key="item.title"
+      cols="12"
+      md="2"
+    >
+      <VCard>
+        <VCardText class="text-center">
+          <div class="text-caption text-medium-emphasis">
+            {{ item.title }}
+          </div>
+          <div class="text-h6 font-weight-bold mt-2">
+            {{ item.value }}
+          </div>
+        </VCardText>
+      </VCard>
+    </VCol>
+
+    <!-- REALTIME MONITORING -->
     <VCol
       cols="12"
       md="8"
     >
-      <AnalyticsCongratulations />
+      <VCard>
+        <VCardItem>
+          <VCardTitle>Realtime Energy Monitoring</VCardTitle>
+          <VCardSubtitle>
+            Updated at {{ realtime.timestamp }}
+          </VCardSubtitle>
+        </VCardItem>
+
+        <VCardText>
+          <!-- Chart Placeholder -->
+          <VSheet
+            height="260"
+            class="d-flex align-center justify-center"
+            color="grey-lighten-4"
+            rounded
+          >
+            <span class="text-medium-emphasis">
+              Realtime chart placeholder
+            </span>
+          </VSheet>
+        </VCardText>
+      </VCard>
     </VCol>
 
-    <VCol
-      cols="12"
-      sm="4"
-    >
-      <VRow>
-        <!-- 👉 Profit -->
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Profit',
-              image: chart,
-              stats: '$12,628',
-              change: 72.80,
-            }"
-          />
-        </VCol>
-
-        <!-- 👉 Sales -->
-        <VCol
-          cols="12"
-          md="6"
-        >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Sales',
-              image: wallet,
-              stats: '$4,679',
-              change: 28.42,
-            }"
-          />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Total Revenue -->
-    <VCol
-      cols="12"
-      md="8"
-      order="2"
-      order-md="1"
-    >
-      <AnalyticsTotalRevenue />
-    </VCol>
-
-    <VCol
-      cols="12"
-      sm="8"
-      md="4"
-      order="1"
-      order-md="2"
-    >
-      <VRow>
-        <!-- 👉 Payments -->
-        <VCol
-          cols="12"
-          sm="6"
-        >
-          <CardStatisticsVertical
-            v-bind=" {
-              title: 'Payments',
-              image: paypal,
-              stats: '$2,468',
-              change: -14.82,
-            }"
-          />
-        </VCol>
-
-        <!-- 👉 Revenue -->
-        <VCol
-          cols="12"
-          sm="6"
-        >
-          <CardStatisticsVertical
-            v-bind="{
-              title: 'Transactions',
-              image: card,
-              stats: '$14,857',
-              change: 28.14,
-            }"
-          />
-        </VCol>
-      </VRow>
-
-      <VRow>
-        <!-- 👉 Profit Report -->
-        <VCol
-          cols="12"
-          sm="12"
-        >
-          <AnalyticsProfitReport />
-        </VCol>
-      </VRow>
-    </VCol>
-
-    <!-- 👉 Order Statistics -->
+    <!-- PREDICTION -->
     <VCol
       cols="12"
       md="4"
-      sm="6"
-      order="3"
     >
-      <AnalyticsOrderStatistics />
+      <VCard
+        variant="tonal"
+        color="primary"
+      >
+        <VCardItem>
+          <VCardTitle>Tomorrow Prediction</VCardTitle>
+          <VCardSubtitle>Estimated usage</VCardSubtitle>
+        </VCardItem>
+
+        <VCardText>
+          <VList density="compact">
+            <VListItem>
+              <VListItemTitle>Energy</VListItemTitle>
+              <template #append>
+                <strong>{{ prediction.kwh }} kWh</strong>
+              </template>
+            </VListItem>
+
+            <VListItem>
+              <VListItemTitle>Estimated Cost</VListItemTitle>
+              <template #append>
+                <strong>Rp {{ prediction.estimatedCost.toLocaleString() }}</strong>
+              </template>
+            </VListItem>
+          </VList>
+        </VCardText>
+      </VCard>
     </VCol>
 
-    <!-- 👉 Tabs chart -->
-    <VCol
-      cols="12"
-      md="4"
-      sm="6"
-      order="3"
-    >
-      <AnalyticsFinanceTabs />
-    </VCol>
+    <!-- DAILY TABLE -->
+    <VCol cols="12">
+      <VCard>
+        <VCardItem>
+          <VCardTitle>Daily Energy Usage</VCardTitle>
+          <VCardSubtitle>Consumption history</VCardSubtitle>
+        </VCardItem>
 
-    <!-- 👉 Transactions -->
-    <VCol
-      cols="12"
-      md="4"
-      sm="6"
-      order="3"
-    >
-      <AnalyticsTransactions />
+        <VCardText>
+          <VTable>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>kWh</th>
+                <th>Cost (Rp)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="row in dailyEnergy"
+                :key="row.date"
+              >
+                <td>{{ row.date }}</td>
+                <td>{{ row.kwh }}</td>
+                <td>{{ row.cost.toLocaleString() }}</td>
+              </tr>
+            </tbody>
+          </VTable>
+        </VCardText>
+      </VCard>
     </VCol>
   </VRow>
 </template>
